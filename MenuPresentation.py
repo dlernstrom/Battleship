@@ -96,14 +96,17 @@ class MenuPresentation(wx.Dialog):
 
     def get_ai_files(self):
         dlg = wx.FileDialog(
-            self, message="Choose an AI files",
+            self, message="Choose AI files",
             defaultDir=os.getcwd(),
             defaultFile="",
             wildcard=PY_WILDCARD,
             style=wx.OPEN | wx.CHANGE_DIR | wx.MULTIPLE
         )
         if dlg.ShowModal() == wx.ID_OK:
-            return dlg.GetPaths()
+            paths = dlg.GetPaths()
+            if len(paths) < 2:
+                raise UserCancelError("Must select more than 1 AI file")
+            return paths
         raise UserCancelError("User Cancelled Selection")
 
     def show_tournament_results(self, victors_sorted, victors_dict):

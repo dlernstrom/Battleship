@@ -46,14 +46,14 @@ class PlayerPresentation(wx.Dialog):
         self.instruction_static.SetLabel(msg)
 
     def coord_generator(self):
-        for row in xrange(10):
-            for col in xrange(9):
-                coord = '%s%s' % (chr(ord('A') + col), row + 1)
-                yield coord, col, row
+        for row in xrange(9):
+            for col in xrange(10):
+                coord = '%s%s' % (chr(ord('A') + row), col + 1)
+                yield coord, row, col
 
     def make_board(self, name, prefix):
         gbs = wx.GridBagSizer(0, 0)
-        for coord, col, row in self.coord_generator():
+        for coord, row, col in self.coord_generator():
             btn_name = prefix % coord
 
             bmp = self.bmps['water']

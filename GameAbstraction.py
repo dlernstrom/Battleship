@@ -8,9 +8,12 @@ from constants import HIT, MISS, OPEN_WATER
 
 class GameAbstraction(object):
     def __init__(self):
-        # boards is addressed via board[col][row]
-        COL_COUNT = 9
-        ROW_COUNT = 10
+        # columns are 1-10
+        # rows are A-I
+        # boards is addressed via board[row][col]
+        # as in board[A][5]... but with indexes
+        COL_COUNT = 10
+        ROW_COUNT = 9
         self.boards = [[[OPEN_WATER] * ROW_COUNT for x in xrange(COL_COUNT)],
                        [[OPEN_WATER] * ROW_COUNT for x in xrange(COL_COUNT)]]
         self.fleet = [make_fleet(), make_fleet()]
@@ -25,11 +28,11 @@ class GameAbstraction(object):
         if number < 1 or number > 10:
             raise Exception("Bad Coordinate Provided: %s" % coord_pair)
         row = number - 1
-        return col, row
+        return row, col
 
     def get_contents(self, coord_pair, player):
-        col, row = self.convert_coords(coord_pair)
-        return self.boards[player][col][row]
+        row, col = self.convert_coords(coord_pair)
+        return self.boards[player][row][col]
 
     def save_fleet(self, player, fleet):
         used_coords = []
@@ -45,22 +48,20 @@ class GameAbstraction(object):
 
     def is_boat_sunk(self, player, boat_name):
         for coord in self.fleet[player][boat_name].coords:
-            col, row = self.convert_coords(coord)
-            if not self.boards[player][col][row] == HIT:
+            if not self.get_contents(coord, player) == HIT:
                 return False
         return True
 
     def record_shot(self, player, coord_pair):
-        col, row = self.convert_coords(coord_pair)
-        self.boards[player][col][row] = MISS
+        row, col = self.convert_coords(coord_pair)
+        self.boards[player][row][col] = MISS
         if coord_pair.upper() in self.ship_coords[player]:
-            self.boards[player][col][row] = HIT
-        return self.boards[player][col][row]
+            self.boards[player][row][col] = HIT
+        return self.get_contents(coord_pair, player)
 
     def is_fleet_destroyed(self, player):
         for coord in self.ship_coords[player]:
-            col, row = self.convert_coords(coord)
-            if not self.boards[player][col][row] == HIT:
+            if not self.get_contents(coord, player) == HIT:
                 return False
         return True
 

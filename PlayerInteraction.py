@@ -21,4 +21,4 @@ class PlayerInteraction(object):
         # also happens to fire a command/button event on most
         # platforms, with the dialog itself as the target.  We screen
         # that possibility out above.
-        self.presentation.EndModal(None)
+        self.presentation.EndModal(0)
