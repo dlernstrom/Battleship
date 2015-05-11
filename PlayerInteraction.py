@@ -13,7 +13,12 @@ class PlayerInteraction(object):
 
     def on_button(self, evt):
         btn = evt.GetEventObject()
-        coords = btn.Name.split('_')[-1]
+        if btn.Name != 'dialog':
+            coords = btn.Name.split('_')[-1]
+            self.presentation.coords_clicked.append(coords)
 
-        self.presentation.coords_clicked.append(coords)
-        self.presentation.Close()
+        # We're modal, so use EndModal, not Close.  Ending a modal
+        # also happens to fire a command/button event on most
+        # platforms, with the dialog itself as the target.  We screen
+        # that possibility out above.
+        self.presentation.EndModal(None)

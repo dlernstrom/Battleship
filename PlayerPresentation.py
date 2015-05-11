@@ -11,9 +11,9 @@ ENEMY_PREFIX = 'btn_enemy_%s'
 US_PREFIX = 'btn_us_%s'
 
 
-def make_bmp(path):
-    return wx.Bitmap(os.path.join(os.path.dirname(__file__), path),
-                     wx.BITMAP_TYPE_BMP)
+def make_bmp(name):
+    path = os.path.join(os.path.dirname(__file__), 'images', name)
+    return wx.Bitmap(path, wx.BITMAP_TYPE_BMP)
 
 
 class PlayerPresentation(wx.Dialog):
@@ -75,22 +75,22 @@ class PlayerPresentation(wx.Dialog):
     def draw_cell(self, prefix, coord, img_name):
         btn_name = prefix % coord
         btn = getattr(self, btn_name)
-        btn.SetBitmap(self.bmps[img_name])
+        btn.SetBitmapLabel(self.bmps[img_name])
 
     def make_bitmaps(self):
-        self.bmps = {'water': make_bmp('images\\water.bmp'),
-                     'water_miss': make_bmp('images\\water_miss.bmp'),
-                     'water_hit': make_bmp('images\\water_hit.bmp'),
-                     'battleship': make_bmp('images\\battleship.bmp'),
-                     'battleship_hit': make_bmp('images\\battleship_hit.bmp'),
-                     'carrier': make_bmp('images\\carrier.bmp'),
-                     'carrier_hit': make_bmp('images\\carrier_hit.bmp'),
-                     'destroyer': make_bmp('images\\destroyer.bmp'),
-                     'destroyer_hit': make_bmp('images\\destroyer_hit.bmp'),
-                     'patrolboat': make_bmp('images\\patrolboat.bmp'),
-                     'patrolboat_hit': make_bmp('images\\patrolboat_hit.bmp'),
-                     'submarine': make_bmp('images\\submarine.bmp'),
-                     'submarine_hit': make_bmp('images\\submarine_hit.bmp')}
+        self.bmps = {'water': make_bmp('water.bmp'),
+                     'water_miss': make_bmp('water_miss.bmp'),
+                     'water_hit': make_bmp('water_hit.bmp'),
+                     'battleship': make_bmp('battleship.bmp'),
+                     'battleship_hit': make_bmp('battleship_hit.bmp'),
+                     'carrier': make_bmp('carrier.bmp'),
+                     'carrier_hit': make_bmp('carrier_hit.bmp'),
+                     'destroyer': make_bmp('destroyer.bmp'),
+                     'destroyer_hit': make_bmp('destroyer_hit.bmp'),
+                     'patrolboat': make_bmp('patrolboat.bmp'),
+                     'patrolboat_hit': make_bmp('patrolboat_hit.bmp'),
+                     'submarine': make_bmp('submarine.bmp'),
+                     'submarine_hit': make_bmp('submarine_hit.bmp')}
 
     def update_fleet_images(self, fleet):
         for key in fleet.keys():

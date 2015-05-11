@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from Exceptions import UserCancelError
+from Exceptions import UserCancelError, MultipleAiNeededError
 from GameAbstraction import GameAbstraction
 from GameController import GameController
 from Player import AI, Human
@@ -39,7 +39,11 @@ class MenuController(object):
         self.presentation.start_sonar()
 
     def run_headless_tournament(self):
-        self.presentation.show_progress(self.run_headless_tournament_generator)
+        try:
+            self.presentation.show_progress(self.run_headless_tournament_generator)
+        except MultipleAiNeededError, data:
+            self.presentation.give_error(unicode(type(data)),
+                                         unicode(data))
 
     def run_headless_tournament_generator(self):
         ITERATIONS = 500
@@ -56,10 +60,13 @@ class MenuController(object):
                 continue
             players.append(player)
             victors_dict[player.name] = 0
-        yield ITERATIONS * len(players) * len(players)
+        if not len(players) >= 2:
+            msg = 'Must have more than one AI player for tournament mode'
+            raise MultipleAiNeededError(msg)
+        yield ITERATIONS * len(players) * (len(players) - 1)
         counter = 0
         for p1, p2 in self.comparision_generator(players):
-            for counter in xrange(ITERATIONS):
+            for i in xrange(ITERATIONS):
                 counter += 1
                 yield counter
                 result = self.run_game([p1, p2], hotseat=False)
@@ -75,6 +82,8 @@ class MenuController(object):
     def comparision_generator(self, players):
         for player1 in players:
             for player2 in players:
+                if player1 == player2:
+                    continue
                 yield player1, player2
 
     def run_game(self, player_config, hotseat):

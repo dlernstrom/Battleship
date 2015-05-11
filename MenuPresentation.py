@@ -9,6 +9,7 @@ from Exceptions import UserCancelError
 
 PY_WILDCARD = "Python source (*.py)|*.py"
 
+
 class MenuPresentation(wx.Dialog):
     def __init__(self):
         title = 'Battleship!'

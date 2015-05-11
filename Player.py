@@ -23,8 +23,12 @@ class AI(Player):
         self.import_and_validate_player()
 
     def copy_file(self, path):
+        digest = hashlib.md5()
+        with open(path) as f:
+            contents = f.read()
+            digest.update(contents)
+            new_name = 'AI_' + digest.hexdigest()
         ext = os.path.splitext(path)[1]
-        new_name = 'AI_' + hashlib.md5().hexdigest()
         running_path = os.path.join(os.path.dirname(__file__),
                                     'AI', '%s%s' % (new_name, ext))
         self.mod_name = 'AI.' + new_name
