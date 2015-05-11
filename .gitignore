@@ -1,0 +1,6 @@
+*.pyc
+*.db
+*.wpr
+*.wpu
+AI/AI_*.py
+MyAI

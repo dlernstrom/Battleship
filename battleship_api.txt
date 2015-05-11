@@ -1,0 +1,10 @@
+API receives 2 calls:
+-------------------------
+config_fleet(self, fleet)
+get_coords_for_shot(self, current_board_api)
+
+current_board_api provides 3 calls:
+-------------------------
+is_enemy_boat_sunk(self, boat_name)
+get_current_contents(self, coord_pair)
+get_enemy_contents(self, coord_pair)
