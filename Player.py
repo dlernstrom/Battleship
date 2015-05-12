@@ -46,7 +46,10 @@ class AI(Player):
                 raise Exception("%s doesn't exist in AIPlayer" % method)
 
     def config_fleet(self, fleet):
-        return self.my_cls.config_fleet(fleet)
+        try:
+            return self.my_cls.config_fleet(fleet)
+        except Exception, data:
+            raise
 
     def get_coords_for_shot(self, current_board_api):
         return self.my_cls.get_coords_for_shot(current_board_api)

@@ -65,7 +65,8 @@ class MenuPresentation(wx.Dialog):
     def get_ai_file(self, role):
         dlg = wx.FileDialog(
             self, message="Choose an AI file for %s" % role,
-            defaultDir=os.getcwd(),
+            defaultDir=os.path.join(os.path.dirname(__file__),
+                                    'MyAI'),
             defaultFile="",
             wildcard=PY_WILDCARD,
             style=wx.OPEN | wx.CHANGE_DIR
@@ -97,7 +98,8 @@ class MenuPresentation(wx.Dialog):
     def get_ai_files(self):
         dlg = wx.FileDialog(
             self, message="Choose AI files",
-            defaultDir=os.getcwd(),
+            defaultDir=os.path.join(os.path.dirname(__file__),
+                                    'MyAI'),
             defaultFile="",
             wildcard=PY_WILDCARD,
             style=wx.OPEN | wx.CHANGE_DIR | wx.MULTIPLE

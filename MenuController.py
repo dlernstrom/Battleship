@@ -58,7 +58,7 @@ class MenuController(object):
                 player = AI(path)
             except Exception, data:
                 continue
-            players.append(player)
+            players.append(path)
             victors_dict[player.name] = 0
         if not len(players) >= 2:
             msg = 'Must have more than one AI player for tournament mode'
@@ -69,7 +69,7 @@ class MenuController(object):
             for i in xrange(ITERATIONS):
                 counter += 1
                 yield counter
-                result = self.run_game([p1, p2], hotseat=False)
+                result = self.run_game([AI(p1), AI(p2)], hotseat=False)
                 winner_name = result['winner'].name
                 victors_dict[winner_name] += 1
         victors_sorted = sorted(victors_dict, key=lambda k: victors_dict[k])

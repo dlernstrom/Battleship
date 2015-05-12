@@ -13,3 +13,7 @@ class UserCancelError(BattleshipError):
 class MultipleAiNeededError(BattleshipError):
     """ Exception thrown when user tries to play tournament mode with one
     AI player """
+
+
+class MisconfiguredBoatError(BattleshipError):
+    """ Misconfigured Boat"""

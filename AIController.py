@@ -7,7 +7,10 @@ class AIController(object):
         self.config = player
 
     def config_fleet(self, fleet):
-        self.config.config_fleet(fleet)
+        try:
+            self.config.config_fleet(fleet)
+        except Exception, data:
+            raise
         return fleet
 
     def get_coords_for_shot(self, current_board_api, fleet):

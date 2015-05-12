@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-
-class MisconfiguredBoatError(Exception):
-    """ Misconfigured Boat"""
+from Exceptions import MisconfiguredBoatError
 
 
 class Boat(object):
