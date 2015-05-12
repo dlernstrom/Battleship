@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from itertools import combinations
 
 from Exceptions import UserCancelError, MultipleAiNeededError
 from GameAbstraction import GameAbstraction
@@ -48,7 +49,7 @@ class MenuController(object):
             return
 
     def run_headless_tournament_generator(self):
-        ITERATIONS = 50
+        TARGET_GAME_COUNT = 500
         players = []
         victors_dict = {}
         try:
@@ -65,10 +66,12 @@ class MenuController(object):
         if not len(players) >= 2:
             msg = 'Must have more than one AI player for tournament mode'
             raise MultipleAiNeededError(msg)
-        yield ITERATIONS * len(players) * (len(players) - 1)
+        combinations_len = len(list(combinations(players, 2)))
+        iteration_count = TARGET_GAME_COUNT / combinations_len
+        yield iteration_count * combinations_len
         counter = 0
-        for p1, p2 in self.comparision_generator(players):
-            for i in xrange(ITERATIONS):
+        for p1, p2 in combinations(players, 2):
+            for i in xrange(iteration_count):
                 counter += 1
                 yield counter
                 result = self.run_game([AI(p1), AI(p2)], hotseat=False)
@@ -80,13 +83,6 @@ class MenuController(object):
         self.presentation.play_game_over_sound()
         self.presentation.show_tournament_results(victors_sorted, victors_dict)
         self.presentation.start_sonar()
-
-    def comparision_generator(self, players):
-        for player1 in players:
-            for player2 in players:
-                if player1 == player2:
-                    continue
-                yield player1, player2
 
     def run_game(self, player_config, hotseat):
         handle = GameController(self.presentation,
