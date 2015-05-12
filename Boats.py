@@ -20,7 +20,7 @@ class Boat(object):
     def coords(self, new_coords):
         coords = [x.upper() for x in new_coords]
         coords = list(set(coords))
-        coords.sort()
+        coords = sorted(coords, key=lambda x: '%s%02d' % (x[0], int(x[1:])))
         if not len(coords) == self.__class__.length:
             raise MisconfiguredBoatError("Your boat coords are misconfigured")
         for coord in coords:

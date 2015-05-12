@@ -16,7 +16,10 @@ class PlayerInteraction(object):
         if btn.Name != 'dialog':
             coords = btn.Name.split('_')[-1]
             self.presentation.coords_clicked.append(coords)
-            self.presentation.coords_clicked.sort()
+            sort_fn = lambda x: '%s%02d' % (x[0], int(x[1:]))
+            self.presentation.coords_clicked = sorted(
+                self.presentation.coords_clicked,
+                key= sort_fn)
 
         # We're modal, so use EndModal, not Close.  Ending a modal
         # also happens to fire a command/button event on most

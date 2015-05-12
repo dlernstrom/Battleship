@@ -40,7 +40,9 @@ class GameAbstraction(object):
             self.fleet[player][boat].coords = fleet[boat].coords
             used_coords.extend(self.fleet[player][boat].coords)
         self.ship_coords[player] = list(set(used_coords))
-        self.ship_coords[player].sort()
+        sort_fn = lambda x: '%s%02d' % (x[0], int(x[1:]))
+        self.ship_coords[player] = sorted(self.ship_coords[player],
+                                          key=sort_fn)
         fleet_coord_count = len(self.ship_coords[player])
         if not fleet_coord_count == 17:
             msg = "Invalid fleet provided: %s" % str(self.ship_coords[player])
