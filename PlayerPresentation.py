@@ -5,7 +5,7 @@ import time
 
 import wx
 
-from constants import HIT, MISS, OPEN_WATER
+from constants import HIT, MISS, OPEN_WATER, SHIPS, SHIP_SIZE
 
 ENEMY_PREFIX = 'btn_enemy_%s'
 US_PREFIX = 'btn_us_%s'
@@ -77,25 +77,40 @@ class PlayerPresentation(wx.Dialog):
         btn = getattr(self, btn_name)
         btn.SetBitmapLabel(self.bmps[img_name])
 
+    def draw_ship_cell(self, btn_prefix, coord, ship, direction, pos, hit_sfx=''):
+        prefix = '%s_%s_%s%s'
+        params = (ship, direction, pos + 1, hit_sfx)
+        name = prefix % params
+        self.draw_cell(btn_prefix, coord, name)
+
     def make_bitmaps(self):
         self.bmps = {'water': make_bmp('water.bmp'),
                      'water_miss': make_bmp('water_miss.bmp'),
-                     'water_hit': make_bmp('water_hit.bmp'),
-                     'battleship': make_bmp('battleship.bmp'),
-                     'battleship_hit': make_bmp('battleship_hit.bmp'),
-                     'carrier': make_bmp('carrier.bmp'),
-                     'carrier_hit': make_bmp('carrier_hit.bmp'),
-                     'destroyer': make_bmp('destroyer.bmp'),
-                     'destroyer_hit': make_bmp('destroyer_hit.bmp'),
-                     'patrolboat': make_bmp('patrolboat.bmp'),
-                     'patrolboat_hit': make_bmp('patrolboat_hit.bmp'),
-                     'submarine': make_bmp('submarine.bmp'),
-                     'submarine_hit': make_bmp('submarine_hit.bmp')}
+                     'water_hit': make_bmp('water_hit.bmp')}
+        prefix = '%s_%s_%s%s'
+        for ship in SHIPS:
+            for direction in ['h', 'v']:
+                for hit_sfx in ['_hit', '']:
+                    for position in xrange(SHIP_SIZE[ship]):
+                        params = (ship, direction, position + 1, hit_sfx)
+                        name = prefix % params
+                        self.bmps[name] = make_bmp(name + '.bmp')
+
+    def ship_direction(self, coords):
+        if not coords:
+            return 'h'
+        if coords[0][0] == coords[-1][0]:
+            return 'h'
+        return 'v'
 
     def update_fleet_images(self, fleet):
-        for key in fleet.keys():
-            for coord in fleet[key].coords:
-                self.draw_cell(US_PREFIX, coord, key.lower())
+        for ship_name in fleet.keys():
+            ship = ship_name.lower()
+            coords = fleet[ship_name].coords
+            direction = self.ship_direction(coords)
+            for coord in coords:
+                index = coords.index(coord)
+                self.draw_ship_cell(US_PREFIX, coord, ship, direction, index)
 
     def config_ship(self, ship_name, fleet):
         self.start_sonar()
@@ -105,7 +120,10 @@ class PlayerPresentation(wx.Dialog):
         self.redraw_ocean(US_PREFIX)
         self.update_fleet_images(fleet)
         for coord in self.coords_clicked:
-            self.draw_cell(US_PREFIX, coord, ship_name.lower())
+            direction = self.ship_direction(self.coords_clicked)
+            index = self.coords_clicked.index(coord)
+            self.draw_ship_cell(US_PREFIX, coord, ship_name.lower(),
+                                direction, index)
         self.ShowModal()
         self.stop_sonar()
         return self.coords_clicked
@@ -131,11 +149,19 @@ class PlayerPresentation(wx.Dialog):
             if cell == MISS:
                 self.draw_cell(US_PREFIX, coord, 'water_miss')
             else:
-                prefix = self.get_fleet_ship_at_coords(fleet, coord).lower()
+                prefix = self.get_fleet_ship_at_coords(fleet, coord)
                 suffix = ''
                 if cell == HIT:
                     suffix = '_hit'
-                self.draw_cell(US_PREFIX, coord, prefix + suffix)
+                if prefix == 'water':
+                    self.draw_cell(US_PREFIX, coord, prefix + suffix)
+                else:
+                    ship = prefix
+                    coords = fleet[ship].coords
+                    direction = self.ship_direction(coords)
+                    index = coords.index(coord)
+                    self.draw_ship_cell(US_PREFIX, coord, ship.lower(),
+                                        direction, index, suffix)
             ## Draw their ships
             cell = api.get_enemy_contents(coord)
             if cell == MISS:
