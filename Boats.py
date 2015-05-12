@@ -21,6 +21,10 @@ class Boat(object):
         coords = [x.upper() for x in new_coords]
         coords = list(set(coords))
         coords = sorted(coords, key=lambda x: '%s%02d' % (x[0], int(x[1:])))
+        self.validate_coordinates(coords)
+        self._coordinates = coords
+
+    def validate_coordinates(self, coords):
         if not len(coords) == self.__class__.length:
             raise MisconfiguredBoatError("Your boat coords are misconfigured")
         for coord in coords:
@@ -44,7 +48,6 @@ class Boat(object):
             ideal_letters = [chr(x) for x in ideal_ords]
             if not ideal_letters == letter_coords:
                 raise MisconfiguredBoatError("Across boat skips letters")
-        self._coordinates = coords
 
     def validate_coordinate(self, coord):
         letter = coord[0]
