@@ -76,12 +76,17 @@ class MenuController(object):
                 yield counter
                 result = self.run_game([AI(p1), AI(p2)], hotseat=False)
                 winner_name = result['winner'].name
+                loser_name = result['loser'].name
+                msg = '%s beat %s in round %d' % (winner_name, loser_name,
+                                                  counter)
+                yield (counter, msg)
                 victors_dict[winner_name] += 1
         victors_sorted = sorted(victors_dict, key=lambda k: victors_dict[k])
         victors_sorted.reverse()
         self.presentation.stop_sonar()
         self.presentation.play_game_over_sound()
-        self.presentation.show_tournament_results(victors_sorted, victors_dict)
+        self.presentation.show_tournament_results(victors_sorted, victors_dict,
+                                                  iteration_count)
         self.presentation.start_sonar()
 
     def run_game(self, player_config, hotseat):

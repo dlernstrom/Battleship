@@ -52,6 +52,7 @@ class GameController(object):
                 winner = self.players[self.enemy].config
                 loser = self.players[self.current].config
                 return {'winner': winner,
+                        'loser': loser,
                         'msg': RETIRE_MSG % (winner.name, loser.name)}
             result = self.abstraction.record_shot(self.enemy, coords)
             p.notify_shot_outcome(result)
@@ -60,6 +61,7 @@ class GameController(object):
                 loser = self.players[self.enemy].config
                 MSG = "%s won because %s's ships were destroyed"
                 return {'winner': winner,
+                        'loser': loser,
                         'msg': MSG % (winner.name, loser.name)}
             if not result == HIT:
                 self.switch_players()
@@ -79,5 +81,6 @@ class GameController(object):
             winner = self.players[self.enemy].config
             loser = self.players[self.current].config
             return {'winner': winner,
+                    'loser': loser,
                     'msg': FLEET_MSG % (winner.name, loser.name)}
 

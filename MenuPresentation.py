@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import os
+from types import TupleType
 
 import wx
 from wx.lib.dialogs import ScrolledMessageDialog
@@ -114,14 +115,16 @@ class MenuPresentation(wx.Dialog):
             return paths
         raise UserCancelError("User Cancelled Selection")
 
-    def show_tournament_results(self, victors_sorted, victors_dict):
+    def show_tournament_results(self, victors_sorted, victors_dict,
+                                iteration_count):
         title = "Contest Results"
-        msg = ["Below are the results of the contest:\n"]
+        msg = ['Each combination of players played %d times' % iteration_count,
+               'Below are the results of the contest:\n']
         contestant_count = len(victors_sorted)
         for counter in xrange(contestant_count):
             victor_name = victors_sorted[counter]
             params = (str(counter + 1).ljust(4),
-                      str(victor_name).ljust(20),
+                      str(victor_name).ljust(40),
                       str(victors_dict[victor_name]).rjust(10))
             msg.append('RANK #%s%s%s' % params)
         self.give_scrolled_message(title, '\n'.join(msg))
@@ -140,5 +143,8 @@ class MenuPresentation(wx.Dialog):
                                 wx.PD_ELAPSED_TIME | wx.PD_ESTIMATED_TIME | \
                                 wx.PD_REMAINING_TIME)
         for x in gen:
-            dlg.Update(x, "Running..")
+            if type(x) == TupleType:
+                dlg.Update(x[0], x[1])
+            else:
+                dlg.Update(x)#, "Running..")
         dlg.Destroy()
