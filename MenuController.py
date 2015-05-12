@@ -44,6 +44,8 @@ class MenuController(object):
         except MultipleAiNeededError, data:
             self.presentation.give_error(unicode(type(data)),
                                          unicode(data))
+        except StopIteration:
+            return
 
     def run_headless_tournament_generator(self):
         ITERATIONS = 500

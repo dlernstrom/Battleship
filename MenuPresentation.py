@@ -5,7 +5,7 @@ import os
 import wx
 from wx.lib.dialogs import ScrolledMessageDialog
 
-from Exceptions import UserCancelError
+from Exceptions import UserCancelError, MultipleAiNeededError
 
 PY_WILDCARD = "Python source (*.py)|*.py"
 
@@ -107,7 +107,7 @@ class MenuPresentation(wx.Dialog):
         if dlg.ShowModal() == wx.ID_OK:
             paths = dlg.GetPaths()
             if len(paths) < 2:
-                raise UserCancelError("Must select more than 1 AI file")
+                raise MultipleAiNeededError("Must select more than 1 AI file")
             return paths
         raise UserCancelError("User Cancelled Selection")
 
