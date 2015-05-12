@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from constants import CARRIER, SUBMARINE, BATTLESHIP, DESTROYER, PATROL_BOAT
 from Exceptions import MisconfiguredBoatError
 
 
@@ -80,8 +81,8 @@ class PatrolBoat(Boat):
 
 
 def make_fleet():
-    return {'Carrier': Carrier(),
-            'Battleship': Battleship(),
-            'Submarine': Submarine(),
-            'Destroyer': Destroyer(),
-            'PatrolBoat': PatrolBoat()}
+    return {CARRIER: Carrier(),
+            BATTLESHIP: Battleship(),
+            SUBMARINE: Submarine(),
+            DESTROYER: Destroyer(),
+            PATROL_BOAT: PatrolBoat()}

@@ -48,7 +48,7 @@ class MenuController(object):
             return
 
     def run_headless_tournament_generator(self):
-        ITERATIONS = 500
+        ITERATIONS = 50
         players = []
         victors_dict = {}
         try:

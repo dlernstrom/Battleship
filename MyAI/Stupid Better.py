@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from constants import HIT, MISS, OPEN_WATER
+from constants import HIT, MISS, OPEN_WATER, CARRIER, SUBMARINE, BATTLESHIP, \
+    DESTROYER, PATROL_BOAT
 
 
 class AIPlayer(object):
@@ -17,13 +18,13 @@ class AIPlayer(object):
 
     def config_fleet(self, fleet):
         coords = []
-        for x in xrange(fleet['Carrier'].length):
+        for x in xrange(fleet[CARRIER].length):
             coords.append('A%d' % (x + 1,))
-        fleet['Carrier'].coords = coords
-        fleet['Battleship'].coords = ['B1', 'B2', 'B3', 'B4']
-        fleet['Submarine'].coords = ['C1', 'C2', 'C3']
-        fleet['Destroyer'].coords = ['D1', 'D2', 'D3']
-        fleet['PatrolBoat'].coords = ['F1', 'F2']
+        fleet[CARRIER].coords = coords
+        fleet[BATTLESHIP].coords = ['B1', 'B2', 'B3', 'B4']
+        fleet[SUBMARINE].coords = ['C1', 'C2', 'C3']
+        fleet[DESTROYER].coords = ['D1', 'D2', 'D3']
+        fleet[PATROL_BOAT].coords = ['F1', 'F2']
         return fleet
 
     def get_coords_for_shot(self, api):
