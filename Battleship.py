@@ -17,6 +17,8 @@ class BattleshipApp(wx.App):
         controller = MenuController(abstraction, presentation, interaction)
         presentation.Show()
         self.SetTopWindow(presentation)
+        #import wx.lib.inspection
+        #wx.lib.inspection.InspectionTool().Show()
         return True
 
 

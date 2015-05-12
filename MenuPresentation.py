@@ -59,7 +59,10 @@ class MenuPresentation(wx.Dialog):
         dlg = wx.TextEntryDialog(
             self, "Please enter %s's name" % role, "Name Please", role)
         if dlg.ShowModal() == wx.ID_OK:
-            return dlg.GetValue()
+            val = dlg.GetValue()
+            dlg.Destroy()
+            return val
+        dlg.Destroy()
         raise UserCancelError("User Cancelled Selection")
 
     def get_ai_file(self, role):
