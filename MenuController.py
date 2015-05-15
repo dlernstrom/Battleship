@@ -49,7 +49,7 @@ class MenuController(object):
             return
 
     def run_headless_tournament_generator(self):
-        TARGET_GAME_COUNT = 500
+        TARGET_GAME_COUNT = 100
         players = []
         victors_dict = {}
         try:

@@ -8,7 +8,7 @@ from wx.lib.dialogs import ScrolledMessageDialog
 
 from Exceptions import UserCancelError, MultipleAiNeededError
 
-PY_WILDCARD = "Python source (*.py)|*.py"
+PY_WILDCARD = "Python (*.py;*.pyc)|*.py;*.pyc"
 
 
 class MenuPresentation(wx.Dialog):
