@@ -35,7 +35,7 @@ class PlayerPresentation(wx.Dialog):
         self.SetSizer(self.gbs)
 
     def notify_turn(self, name):
-        self.give_message("%s's turn!" % name, "%s, you're up!" % name)
+        self.give_message("%s's turn" % name, "%s, you're up!" % name)
 
     @property
     def instruction(self):
